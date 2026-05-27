@@ -3,6 +3,26 @@ import { useEffect, useState } from 'react';
 import AdminShell from '../../components/AdminShell';
 import { aGet, aPost, aPut, aDelete } from '../../lib/admin-api';
 
+/* Two-column TR / EN field pair */
+function BiField({ label, keyBase, vals, set, ta }) {
+  return (
+    <div className="a-g2" style={{ marginBottom: 14 }}>
+      <div className="a-field">
+        <div className="a-lbl">{label} (TR)</div>
+        {ta
+          ? <textarea className="a-ta" value={vals[`${keyBase}_tr`] || ''} onChange={set(`${keyBase}_tr`)} />
+          : <input className="a-input" value={vals[`${keyBase}_tr`] || ''} onChange={set(`${keyBase}_tr`)} />}
+      </div>
+      <div className="a-field">
+        <div className="a-lbl">{label} (EN)</div>
+        {ta
+          ? <textarea className="a-ta" value={vals[`${keyBase}_en`] || ''} onChange={set(`${keyBase}_en`)} />
+          : <input className="a-input" value={vals[`${keyBase}_en`] || ''} onChange={set(`${keyBase}_en`)} />}
+      </div>
+    </div>
+  );
+}
+
 function Toast({ msg, type }) {
   if (!msg) return null;
   return <div className={`a-toast ${type}`}>{msg}</div>;
@@ -250,12 +270,26 @@ const EMPTY_MATERIAL = { name_tr: '', name_en: '', subtitle: '', bg_gradient: ''
 
 export default function ApproachAdminPage() {
   const [data, setData] = useState({ settings: {}, pillars: [], stages: [], principles: [], materials: [] });
+  const [svals, setSvals] = useState({});
   const [saving, setSaving] = useState(null);
+  const [settingsSaving, setSettingsSaving] = useState(false);
   const [toast, setToast] = useState(null);
 
   useEffect(() => {
     aGet('/api/admin/approach').then(setData).catch(() => {});
+    aGet('/api/admin/settings').then(setSvals).catch(() => {});
   }, []);
+
+  const setS = (key) => (e) => setSvals(v => ({ ...v, [key]: e.target.value }));
+
+  async function saveSettings() {
+    setSettingsSaving(true);
+    try {
+      await aPut('/api/admin/settings', svals);
+      showToast('Sayfa metinleri kaydedildi.');
+    } catch (e) { showToast(e.message, 'err'); }
+    finally { setSettingsSaving(false); }
+  }
 
   function showToast(msg, type = 'ok') {
     setToast({ msg, type });
@@ -349,9 +383,25 @@ export default function ApproachAdminPage() {
         <a href={`${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/approach`} target="_blank" className="a-btn ghost">Sayfayı Önizle ↗</a>
       }
     >
-      <p style={{ fontFamily: 'var(--sans)', fontSize: 13, opacity: .5, marginBottom: 24 }}>
-        Hero metni ve manifesto alıntısı için <a href="/settings" style={{ color: 'inherit', textDecoration: 'underline' }}>Ayarlar</a> sayfasını kullanın.
-      </p>
+
+      {/* ── SAYFA METİNLERİ ── */}
+      <div className="a-card" style={{ marginBottom: 24 }}>
+        <div className="a-card-hd">Sayfa Metinleri</div>
+        <BiField label="Hero üst metin (lede)" keyBase="approach_hero_lede" vals={svals} set={setS} ta />
+        <BiField label="Hero alt metin (body)" keyBase="approach_hero_body" vals={svals} set={setS} ta />
+        <BiField label="Manifesto alıntısı" keyBase="approach_manifesto" vals={svals} set={setS} />
+        <div className="a-field" style={{ marginBottom: 14 }}>
+          <div className="a-lbl">Süreç toplam süresi</div>
+          <input className="a-input" style={{ maxWidth: 200 }} value={svals.approach_process_duration || ''} onChange={setS('approach_process_duration')} placeholder="14–20 hafta" />
+        </div>
+        <BiField label="CTA başlık" keyBase="approach_cta_title" vals={svals} set={setS} />
+        <BiField label="CTA paragraf" keyBase="approach_cta_body" vals={svals} set={setS} ta />
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <button className="a-btn" onClick={saveSettings} disabled={settingsSaving}>
+            {settingsSaving ? 'Kaydediliyor…' : 'Metinleri Kaydet'}
+          </button>
+        </div>
+      </div>
 
       {/* ── PILLARS ── */}
       <div className="a-card-hd" style={{ marginBottom: 12 }}>Sabitler <span style={{ fontFamily: 'var(--mono)', fontSize: 11, opacity: .45 }}>— Üç Sabit</span></div>

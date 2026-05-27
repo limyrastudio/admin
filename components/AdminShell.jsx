@@ -12,6 +12,10 @@ const NAV = [
   { href: '/team',     label: 'Ekip',       icon: '◯' },
   { href: '/press',    label: 'Basın',      icon: '◻' },
   { href: '/contacts', label: 'Mesajlar',   icon: '◈', key: 'contacts' },
+];
+
+const NAV_BOTTOM = [
+  { href: '/home',     label: 'Ana Sayfa İçeriği', icon: '⌂' },
   { href: '/settings', label: 'Ayarlar',    icon: '◎' },
 ];
 
@@ -66,7 +70,15 @@ export default function AdminShell({ title, actions, children }) {
               </li>
             ))}
           </ul>
-          <ul className="a-nav" style={{ marginTop: 'auto', paddingBottom: 8, borderTop: '1px solid rgba(255,255,255,.07)', paddingTop: 8 }}>
+          <ul className="a-nav" style={{ marginTop: 'auto', borderTop: '1px solid rgba(255,255,255,.07)', paddingTop: 8 }}>
+            {NAV_BOTTOM.map(l => (
+              <li key={l.href}>
+                <Link href={l.href} className={isActive(l.href) ? 'act' : ''}>
+                  <span className="a-nav-icon">{l.icon}</span>
+                  <span>{l.label}</span>
+                </Link>
+              </li>
+            ))}
             <li>
               <Link href={process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'} target="_blank">
                 <span className="a-nav-icon" style={{ opacity: .5 }}>↗</span>
