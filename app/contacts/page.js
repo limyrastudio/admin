@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AdminShell from '../../components/AdminShell';
 import { aGet, aPut, aDelete } from '../../lib/admin-api';
 
@@ -80,8 +80,8 @@ export default function ContactsPage() {
             </thead>
             <tbody>
               {filtered.map(c => (
-                <>
-                  <tr key={c.id} className={`a-msg-row ${!c.read ? 'unread' : ''}`} onClick={() => openMsg(c.id)}>
+                <React.Fragment key={c.id}>
+                  <tr className={`a-msg-row ${!c.read ? 'unread' : ''}`} onClick={() => openMsg(c.id)}>
                     <td className="td-num">{c.created_at?.slice(0, 10)}</td>
                     <td>{c.name}</td>
                     <td style={{ opacity: .7 }}>{c.email}</td>
@@ -116,7 +116,7 @@ export default function ContactsPage() {
                       </td>
                     </tr>
                   )}
-                </>
+                </React.Fragment>
               ))}
             </tbody>
           </table>

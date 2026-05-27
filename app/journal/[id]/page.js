@@ -43,7 +43,8 @@ export default function JournalEditor({ params }) {
       aGet(`/api/admin/journal`).then(posts => {
         const p = posts.find(x => x.id === Number(id));
         if (p) setForm({ ...EMPTY, ...p, published_at: p.published_at?.slice(0, 16) || EMPTY.published_at });
-      }).catch(() => {});
+        else router.replace('/journal');
+      }).catch(() => router.replace('/journal'));
     }
   }, [id]);
 

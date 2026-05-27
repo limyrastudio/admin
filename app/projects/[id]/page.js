@@ -284,13 +284,13 @@ export default function ProjectEditor({ params }) {
     if (!isNew) {
       aGet(`/api/admin/projects/${id}`)
         .then(data => {
-          if (!data) return;
+          if (!data || data.error) { router.replace('/projects'); return; }
           setProject({ ...EMPTY_PROJECT, ...data });
           setImages(data.images || []);
           setMaterials(data.materials || []);
           setKeyFacts(data.key_facts || []);
           setCredits(data.credits || []);
-        }).catch(() => {});
+        }).catch(() => router.replace('/projects'));
     }
   }, [id]);
 
