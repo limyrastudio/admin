@@ -1,5 +1,4 @@
 'use client';
-export const runtime = 'edge';
 import React, { useEffect, useState } from 'react';
 import AdminShell from '../../components/AdminShell';
 import { aGet, aPut, aDelete } from '../../lib/admin-api';
