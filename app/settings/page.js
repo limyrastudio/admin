@@ -122,6 +122,30 @@ const GROUPS = [
       { key: 'footer_copy',       label: 'Telif Notu', placeholder: '© 2025 Limyra Studio' },
     ],
   },
+  {
+    title: 'İletişim Sayfası — Genel',
+    fields: [
+      { key: 'contact_person', label: 'Söyleşi Yapan (İsim)', placeholder: 'Eda' },
+    ],
+  },
+  {
+    title: 'İletişim Sayfası — İstanbul Ofis',
+    fields: [
+      { key: 'istanbul_address_tr', label: 'Adres (TR)', placeholder: 'Asmalımescit Mah. 42 · 2. Kat' },
+      { key: 'istanbul_address_en', label: 'Adres (EN)', placeholder: 'Asmalımescit St. 42 · 2nd Floor' },
+      { key: 'istanbul_phone',      label: 'Telefon', placeholder: '+90 212 000 00 00' },
+      { key: 'istanbul_contact',    label: 'Yetkili Adı', placeholder: 'Mert Yıldız' },
+    ],
+  },
+  {
+    title: 'İletişim Sayfası — Antalya Ofis',
+    fields: [
+      { key: 'antalya_address_tr', label: 'Adres (TR)', placeholder: 'Kılınçarslan Mah. 14 · Kaleiçi' },
+      { key: 'antalya_address_en', label: 'Adres (EN)', placeholder: 'Kılınçarslan St. 14 · Kaleiçi' },
+      { key: 'antalya_phone',      label: 'Telefon', placeholder: '+90 242 000 00 00' },
+      { key: 'antalya_contact',    label: 'Yetkili Adı', placeholder: 'Eda Aksel' },
+    ],
+  },
 ];
 
 function Toast({ msg, type }) {
