@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import AdminShell from '../../../components/AdminShell';
 import Link from 'next/link';
 import { aGet, aPost, aPut, aUpload } from '../../../lib/admin-api';
@@ -28,7 +28,8 @@ function Toggle({ on, onChange, label }) {
   );
 }
 
-export default function JournalIdClient({ id }) {
+export default function JournalIdClient() {
+  const { id } = useParams();
   const isNew = id === 'new';
   const router = useRouter();
   const [form, setForm] = useState(EMPTY);

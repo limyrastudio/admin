@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import AdminShell from '../../../components/AdminShell';
 import Link from 'next/link';
 import { aGet, aPost, aPut, aDelete, aUpload } from '../../../lib/admin-api';
@@ -264,7 +264,8 @@ function CreditsSection({ projectId, items, setItems }) {
 }
 
 /* ── Main Editor ─────────────────────────────── */
-export default function ProjectEditor({ id }) {
+export default function ProjectEditor() {
+  const { id } = useParams();
   const isNew = id === 'new';
   const router = useRouter();
 
