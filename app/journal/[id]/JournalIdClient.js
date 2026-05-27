@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import AdminShell from '../../../components/AdminShell';
 import Link from 'next/link';
 import { aGet, aPost, aPut, aUpload } from '../../../lib/admin-api';
@@ -29,22 +29,27 @@ function Toggle({ on, onChange, label }) {
 }
 
 export default function JournalIdClient() {
-  const { id } = useParams();
-  const isNew = id === 'new';
   const router = useRouter();
+  const [id, setId] = useState('new');
+  const isNew = id === 'new';
   const [form, setForm] = useState(EMPTY);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [toast, setToast] = useState(null);
 
+  // Read real ID from actual browser URL (useParams returns baked build-time value)
   useEffect(() => {
-    if (!isNew) {
-      aGet(`/api/admin/journal`).then(posts => {
-        const p = posts.find(x => x.id === Number(id));
-        if (p) setForm({ ...EMPTY, ...p, published_at: p.published_at?.slice(0, 16) || EMPTY.published_at });
-        else router.replace('/journal');
-      }).catch(() => router.replace('/journal'));
-    }
+    const parts = window.location.pathname.replace(/\/+$/, '').split('/').filter(Boolean);
+    setId(parts[parts.length - 1] || 'new');
+  }, []);
+
+  useEffect(() => {
+    if (id === 'new') return;
+    aGet(`/api/admin/journal`).then(posts => {
+      const p = posts.find(x => x.id === Number(id));
+      if (p) setForm({ ...EMPTY, ...p, published_at: p.published_at?.slice(0, 16) || EMPTY.published_at });
+      else router.replace('/journal');
+    }).catch(() => router.replace('/journal'));
   }, [id]);
 
   const set = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }));

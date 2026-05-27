@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState, useRef } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import AdminShell from '../../../components/AdminShell';
 import Link from 'next/link';
 import { aGet, aPost, aPut, aDelete, aUpload } from '../../../lib/admin-api';
@@ -265,32 +265,39 @@ function CreditsSection({ projectId, items, setItems }) {
 
 /* ── Main Editor ─────────────────────────────── */
 export default function ProjectEditor() {
-  const { id } = useParams();
-  const isNew = id === 'new';
   const router = useRouter();
+  const [id, setId] = useState('new');
+  const isNew = id === 'new';
 
   const [project, setProject] = useState(EMPTY_PROJECT);
   const [images, setImages] = useState([]);
   const [materials, setMaterials] = useState([]);
   const [keyFacts, setKeyFacts] = useState([]);
   const [credits, setCredits] = useState([]);
-  const [savedId, setSavedId] = useState(isNew ? null : Number(id));
+  const [savedId, setSavedId] = useState(null);
   const [saving, setSaving] = useState(false);
   const [coverUploading, setCoverUploading] = useState(false);
   const [toast, setToast] = useState(null);
 
+  // Read real ID from actual browser URL (useParams returns baked build-time value)
   useEffect(() => {
-    if (!isNew) {
-      aGet(`/api/admin/projects/${id}`)
-        .then(data => {
-          if (!data || data.error) { router.replace('/projects'); return; }
-          setProject({ ...EMPTY_PROJECT, ...data });
-          setImages(data.images || []);
-          setMaterials(data.materials || []);
-          setKeyFacts(data.key_facts || []);
-          setCredits(data.credits || []);
-        }).catch(() => router.replace('/projects'));
-    }
+    const parts = window.location.pathname.replace(/\/+$/, '').split('/').filter(Boolean);
+    const realId = parts[parts.length - 1] || 'new';
+    setId(realId);
+    if (realId !== 'new') setSavedId(Number(realId));
+  }, []);
+
+  useEffect(() => {
+    if (id === 'new') return;
+    aGet(`/api/admin/projects/${id}`)
+      .then(data => {
+        if (!data || data.error) { router.replace('/projects'); return; }
+        setProject({ ...EMPTY_PROJECT, ...data });
+        setImages(data.images || []);
+        setMaterials(data.materials || []);
+        setKeyFacts(data.key_facts || []);
+        setCredits(data.credits || []);
+      }).catch(() => router.replace('/projects'));
   }, [id]);
 
   const set = (k) => (e) => setProject(p => ({ ...p, [k]: e.target.value }));
