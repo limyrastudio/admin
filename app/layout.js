@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import './admin.css';
 
 export const metadata = { title: 'Admin · Limyra Studio' };
