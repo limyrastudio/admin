@@ -71,6 +71,57 @@ const GROUPS = [
       { key: 'approach_cta_body_en',     label: 'CTA Metin (EN)', ta: true },
     ],
   },
+  {
+    title: 'Ana Sayfa — Hakkımızda Bölümü',
+    fields: [
+      { key: 'about_title_tr',  label: 'Başlık (TR)', placeholder: 'Mimariyi anlatmak yerine işaret ederiz.' },
+      { key: 'about_title_en',  label: 'Başlık (EN)', placeholder: 'We point to architecture, rather than explain it.' },
+      { key: 'about_body_tr',   label: 'Paragraf (TR)', ta: true },
+      { key: 'about_body_en',   label: 'Paragraf (EN)', ta: true },
+    ],
+  },
+  {
+    title: 'Ana Sayfa — Yaklaşım Sütun 1 (Oran / Proportion)',
+    fields: [
+      { key: 'approach_col1_title_tr', label: 'Başlık (TR)', placeholder: 'Oran' },
+      { key: 'approach_col1_title_en', label: 'Başlık (EN)', placeholder: 'Proportion' },
+      { key: 'approach_col1_body_tr',  label: 'Açıklama (TR)', ta: true },
+      { key: 'approach_col1_body_en',  label: 'Açıklama (EN)', ta: true },
+    ],
+  },
+  {
+    title: 'Ana Sayfa — Yaklaşım Sütun 2 (Işık / Light)',
+    fields: [
+      { key: 'approach_col2_title_tr', label: 'Başlık (TR)', placeholder: 'Işık' },
+      { key: 'approach_col2_title_en', label: 'Başlık (EN)', placeholder: 'Light' },
+      { key: 'approach_col2_body_tr',  label: 'Açıklama (TR)', ta: true },
+      { key: 'approach_col2_body_en',  label: 'Açıklama (EN)', ta: true },
+    ],
+  },
+  {
+    title: 'Ana Sayfa — Yaklaşım Sütun 3 (Malzeme / Matter)',
+    fields: [
+      { key: 'approach_col3_title_tr', label: 'Başlık (TR)', placeholder: 'Malzeme' },
+      { key: 'approach_col3_title_en', label: 'Başlık (EN)', placeholder: 'Matter' },
+      { key: 'approach_col3_body_tr',  label: 'Açıklama (TR)', ta: true },
+      { key: 'approach_col3_body_en',  label: 'Açıklama (EN)', ta: true },
+    ],
+  },
+  {
+    title: 'Ana Sayfa — Stüdyo Bölümü',
+    fields: [
+      { key: 'studio_body_tr', label: 'Stüdyo Paragrafı (TR)', ta: true },
+      { key: 'studio_body_en', label: 'Stüdyo Paragrafı (EN)', ta: true },
+    ],
+  },
+  {
+    title: 'Footer',
+    fields: [
+      { key: 'footer_tagline_tr', label: 'Slogan (TR)', placeholder: 'Sade ve dayanıklı mekânlar.' },
+      { key: 'footer_tagline_en', label: 'Slogan (EN)', placeholder: 'Simple and enduring spaces.' },
+      { key: 'footer_copy',       label: 'Telif Notu', placeholder: '© 2025 Limyra Studio' },
+    ],
+  },
 ];
 
 function Toast({ msg, type }) {

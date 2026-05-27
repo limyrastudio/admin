@@ -476,12 +476,20 @@ export default function ProjectEditor() {
 
       {/* ─── 3. Kapak Fotoğrafı ─────────────── */}
       <div className="a-card">
-        <div className="a-card-hd">Kapak Fotoğrafı</div>
+        <div className="a-card-hd">Kapak Fotoğrafı <span style={{ fontWeight: 400, opacity: .5, textTransform: 'none', letterSpacing: 0 }}>— sitede arch (kemer) çerçevesinde görünür</span></div>
         <div className="a-cover-box">
-          <div className="a-cover-prev">
-            {project.cover_image
-              ? <img src={project.cover_image} alt="Kapak" />
-              : <div className="a-cover-empty" style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32, opacity: .25 }}>▭</div>}
+          {/* arch-shaped preview matching the site frame */}
+          <div style={{ width: 180, flexShrink: 0 }}>
+            <div style={{
+              width: 180, paddingBottom: '133%', position: 'relative',
+              borderRadius: '90px 90px 0 0', overflow: 'hidden',
+              background: 'var(--border)',
+            }}>
+              {project.cover_image
+                ? <img src={project.cover_image} alt="Kapak" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                : <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, opacity: .25 }}>▭</div>}
+            </div>
+            <div style={{ fontSize: 10, opacity: .45, textAlign: 'center', marginTop: 6, fontFamily: 'var(--mono)', letterSpacing: '.04em' }}>Arch · 2:3</div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingTop: 8 }}>
             <label className="a-btn ghost" style={{ cursor: 'pointer' }}>
