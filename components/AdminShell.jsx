@@ -5,18 +5,21 @@ import Link from 'next/link';
 import { getToken, clearToken, getUser, aGet } from '../lib/admin-api';
 
 const NAV = [
-  { href: '/',         label: 'Dashboard',  icon: '▣' },
-  { href: '/projects', label: 'Projeler',   icon: '◫' },
-  { href: '/journal',  label: 'Günce',      icon: '◱' },
-  { href: '/approach', label: 'Yaklaşım',   icon: '◬' },
-  { href: '/team',     label: 'Ekip',       icon: '◯' },
-  { href: '/press',    label: 'Basın',      icon: '◻' },
-  { href: '/contacts', label: 'Mesajlar',   icon: '◈', key: 'contacts' },
-];
-
-const NAV_BOTTOM = [
-  { href: '/home',     label: 'Ana Sayfa İçeriği', icon: '⌂' },
-  { href: '/settings', label: 'Ayarlar',    icon: '◎' },
+  { href: '/',          label: 'Dashboard',       icon: '▣' },
+  { sep: 'İÇERİK' },
+  { href: '/projects',  label: 'Projeler',         icon: '◫' },
+  { href: '/journal',   label: 'Günce',            icon: '◱' },
+  { href: '/team',      label: 'Ekip',             icon: '◯' },
+  { href: '/press',     label: 'Basın',            icon: '◻' },
+  { href: '/contacts',  label: 'Mesajlar',         icon: '◈', key: 'contacts' },
+  { sep: 'SAYFALAR' },
+  { href: '/pages',          label: 'Tüm Sayfalar',    icon: '⊞' },
+  { href: '/pages/home',     label: 'Ana Sayfa',        icon: '⌂',  indent: true },
+  { href: '/pages/work',     label: 'İşler',            icon: '◧',  indent: true },
+  { href: '/approach',       label: 'Yaklaşım',         icon: '◬',  indent: true },
+  { href: '/pages/contact',  label: 'İletişim',         icon: '◉',  indent: true },
+  { sep: 'SİSTEM' },
+  { href: '/settings',  label: 'Ayarlar',          icon: '◎' },
 ];
 
 export default function AdminShell({ title, actions, children }) {
@@ -36,7 +39,7 @@ export default function AdminShell({ title, actions, children }) {
 
   function isActive(href) {
     if (href === '/') return pathname === '/';
-    return pathname.startsWith(href);
+    return pathname === href || pathname.startsWith(href + '/');
   }
 
   if (!ready) {
@@ -58,30 +61,31 @@ export default function AdminShell({ title, actions, children }) {
           </div>
         </div>
 
-        <nav style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <ul className="a-nav">
-            {NAV.map(l => (
-              <li key={l.href}>
-                <Link href={l.href} className={isActive(l.href) ? 'act' : ''}>
-                  <span className="a-nav-icon">{l.icon}</span>
-                  <span>{l.label}</span>
-                  {l.key === 'contacts' && unread > 0 && <span className="badge">{unread}</span>}
-                </Link>
-              </li>
-            ))}
+        <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', paddingBottom: 8 }}>
+          <ul className="a-nav" style={{ flex: 1 }}>
+            {NAV.map((l, i) => {
+              if (l.sep) return (
+                <li key={`sep-${i}`} className="a-nav-sep">{l.sep}</li>
+              );
+              return (
+                <li key={l.href}>
+                  <Link
+                    href={l.href}
+                    className={isActive(l.href) ? 'act' : ''}
+                    style={l.indent ? { paddingLeft: 22, fontSize: 12 } : {}}
+                  >
+                    <span className="a-nav-icon" style={l.indent ? { opacity: .35 } : {}}>{l.icon}</span>
+                    <span>{l.label}</span>
+                    {l.key === 'contacts' && unread > 0 && <span className="badge">{unread}</span>}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
-          <ul className="a-nav" style={{ marginTop: 'auto', borderTop: '1px solid rgba(255,255,255,.07)', paddingTop: 8 }}>
-            {NAV_BOTTOM.map(l => (
-              <li key={l.href}>
-                <Link href={l.href} className={isActive(l.href) ? 'act' : ''}>
-                  <span className="a-nav-icon">{l.icon}</span>
-                  <span>{l.label}</span>
-                </Link>
-              </li>
-            ))}
+          <ul className="a-nav" style={{ borderTop: '1px solid rgba(255,255,255,.07)', paddingTop: 6, marginTop: 4 }}>
             <li>
               <Link href={process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'} target="_blank">
-                <span className="a-nav-icon" style={{ opacity: .5 }}>↗</span>
+                <span className="a-nav-icon" style={{ opacity: .4 }}>↗</span>
                 <span>Siteyi Gör</span>
               </Link>
             </li>
