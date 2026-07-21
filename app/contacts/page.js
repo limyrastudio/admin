@@ -48,6 +48,7 @@ export default function ContactsPage() {
   };
   const SCOPE_LABELS = { concept: 'Kavram', design: 'Tasarım', full: 'Tam Süreç' };
   const TIMELINE_LABELS = { now: 'Şimdi', q2: '3 Ay', q4: '6+ Ay', flex: 'Esnek' };
+  const BUDGET_LABELS = { '500k': '· 500K ₺', '1m': '~ 1 M ₺', '2_5m': '~ 2,5 M ₺', '5m': '~ 5 M ₺', '5m_plus': '5 M+ ₺' };
 
   return (
     <AdminShell
@@ -105,6 +106,7 @@ export default function ContactsPage() {
                           {c.area && <span className="a-msg-meta-item"><strong>Alan:</strong> {c.area} m²</span>}
                           {c.scope && <span className="a-msg-meta-item"><strong>Kapsam:</strong> {SCOPE_LABELS[c.scope] || c.scope}</span>}
                           {c.timeline && <span className="a-msg-meta-item"><strong>Zaman:</strong> {TIMELINE_LABELS[c.timeline] || c.timeline}</span>}
+                          {c.budget && <span className="a-msg-meta-item"><strong>Bütçe:</strong> {BUDGET_LABELS[c.budget] || c.budget}</span>}
                         </div>
                         <div className="a-msg-body">{c.message || '(Mesaj içeriği yok)'}</div>
                         <div style={{ marginTop: 12, display: 'flex', gap: 8 }}>
